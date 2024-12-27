@@ -1,0 +1,12 @@
+openai:
+  base_url: !ENV ${OPENAI_BASE_URL:https://open.bigmodel.cn/api/paas/v4/}
+  api_key: !ENV ${OPENAI_API_KEY:NONE}
+  embedding:
+    model: embedding-3
+    dimensions: 512
+  completion:
+    model: glm-4-flash
+local_knowledge_base:
+  local_dir: ./db
+  db: local.db
+  collection_name: knowledge
