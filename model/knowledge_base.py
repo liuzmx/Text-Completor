@@ -111,21 +111,20 @@ class LocalKnowledgeBase:
                         docs.append(KnowledgeDoc(text=text, metadata=metadata))
         return docs
 
-    def retrieve(self, query_texts: List[str], top_k: int = 3):
+    def retrieve(self, query: str, top_k: int = 3) -> List[str]:
         """
         检索本地知识库
         param query: 查询语句
         param top_k: 检索数量
         """
-        vectors = embed_texts(query_texts)
+        vectors = embed_texts([query])
         docs = self.client.search(
             collection_name=self.collection_name,
             data=vectors,
             limit=top_k,
             output_fields=["text", "metadata"],
         )
-        for doc in docs:
-            print(doc)
+        return [doc["entity"]["text"] for doc in docs[0]]
 
 
 if __name__ == "__main__":
@@ -135,4 +134,4 @@ if __name__ == "__main__":
     # docs = client.load_and_split("../data/bbc_news")
     # client.insert(docs)
 
-    # client.retrieve([" the Met Office said. A gradual decline in temperatures will "])
+    client.retrieve("A gradual decline in temperatures will ")
