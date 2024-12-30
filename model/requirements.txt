@@ -1,0 +1,7 @@
+datasets>=3.2.0
+pymilvus>=2.5.2
+pyaml_env>=1.2.1
+openai>=1.58.1
+nltk>=3.9.1
+fastapi>=0.115.6
+uvicorn>=0.34.0

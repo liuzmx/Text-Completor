@@ -6,7 +6,10 @@ openai:
     dimensions: 512
   completion:
     model: glm-4-flash
-local_knowledge_base:
-  local_dir: ./db
+knowledge:
+  dir: ./knowledge/db
   db: local.db
-  collection_name: knowledge
+  collection: knowledge
+trie:
+  dir: ./trie/pkls
+  pkl: trie.pkl
