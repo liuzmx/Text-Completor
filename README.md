@@ -51,3 +51,7 @@
 - 向量检索库选用了 [Milvus Lite](https://milvus.io/docs/zh/quickstart.md)。
 
 - RAG 检索使用了 [pymilvus](https://github.com/milvus-io/pymilvus) 的语义检索能力。
+
+## 技术方案图
+
+![Tech Road](./assets/tech-road.png)
