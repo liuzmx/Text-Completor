@@ -55,3 +55,62 @@
 ## 技术方案图
 
 ![Tech Road](./assets/tech-road.png)
+
+## 文本补全模型代码
+
+核心代码位于[model](./model)目录下，文件结构如下：
+
+```text
+.
+├── build_knowledge.py  # 构建本地知识库脚本
+├── common.py           # 常用函数
+├── completion.py       # 文本补全模型
+├── config
+│   ├── config.yml      # 配置文件
+│   └── logging.ini     # 日志配置文件
+├── knowledge
+│   ├── db              # 本地知识库
+│   ├── embedding.py    # Embedding 调用
+│   ├── __init__.py
+│   └── knowledge.py    # 本地知识库管理
+├── logs
+├── main.py             # FastAPI服务
+├── requirements.txt    # 依赖包
+└── start.sh            # 启动脚本
+```
+
+模型服务本地启动：
+
+```shell
+export OPENAI_API_KEY=<ZHIPUAI_API_KEY>
+cd model
+uvicorn main:app --host 0.0.0.0 --port 8000 --workers 1 --access-log --log-config config/logging.ini
+```
+
+启动后输出：
+
+```shell
+2024-12-31 16:03:12,154 [INFO] [22686] [uvicorn.error] server.py-server-83: Started server process [22686]
+2024-12-31 16:03:12,154 [INFO] [22686] [uvicorn.error] on.py-on-48: Waiting for application startup.
+2024-12-31 16:03:12,155 [INFO] [22686] [uvicorn.error] on.py-on-62: Application startup complete.
+2024-12-31 16:03:12,155 [INFO] [22686] [uvicorn.error] server.py-server-215: Uvicorn running on http://0.0.0.0:8600 (Press CTRL+C to quit)
+```
+
+调用示例：
+
+```shell
+POST /api/v1/completion HTTP/1.1
+Host: localhost:8600
+Content-Type: application/json
+Content-Length: 272
+
+{
+    "text": "The Post Office handled a record amount of cash in July with customers either depositing or withdrawing more than £3.7bn. [MASK] The increasing use of the Post Office to handle cash comes as the rate of closure of bank branches shows no sign of slowing"
+}
+```
+
+响应结果：
+
+```shell
+"This surge in cash transactions highlights the growing reliance on the Post Office as a vital financial service provider, especially in light of the ongoing closure of bank branches.. More than 6,000 have shut their doors since 2015, an average of about 50 each month. This trend underscores the need for alternative banking solutions, with the Post Office stepping in to fill the gap for many communities."
+```
