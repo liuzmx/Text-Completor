@@ -171,5 +171,4 @@ cython_debug/
 .pypirc
 *.log
 *.log.*
-bbc_news
 checkpoints
