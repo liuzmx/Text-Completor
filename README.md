@@ -114,3 +114,25 @@ Content-Length: 272
 ```shell
 "This surge in cash transactions highlights the growing reliance on the Post Office as a vital financial service provider, especially in light of the ongoing closure of bank branches.. More than 6,000 have shut their doors since 2015, an average of about 50 each month. This trend underscores the need for alternative banking solutions, with the Post Office stepping in to fill the gap for many communities."
 ```
+
+## 文本补全效果评估
+
+考虑到个性化文本补全的正确结果不唯一，原则上来讲，只要文本补全的文本与用户的上下文组合后整体文本通顺流畅，即可认为文本补全符合预期。为了简化评估设计，考虑使用补全文本与目标文本的语义相似度作为评估依据，具体设计如下：
+
+- **数据选择**：使用 [**bbc_news_alltime**](https://huggingface.co/datasets/RealTimeData/bbc_news_alltime) 数据集近 4 个月（2024 年 8 约至 11 月）的新闻文章作为测试集。
+
+- **知识库构建**：将 bbc_news_alltime 2024 年 9-11 月工具 3 个月的新闻全部作为 **用户本地文件** 写入本地的 Milvus 知识库（即文件：`model/knowledge/db/local.db`）。
+
+- **测试数据集**：分为 2 类，第 1 类是测试集的 2024 年 9-11 月新闻，第 2 类是测试集的 2024 年 8 月新闻。两类数据都采取从句子中随机掩盖 2-5 个词/短语的方式构建。从 2 个测试数据集中（`[evaluate/dataset](./evaluate/dataset/)`）分别取出 1000 条数据，作为第 1 类和第 2 类的测试数据。格式如下：
+
+```json
+{
+  "original_text": "The products were rolled out at a glossy event where protestors gathered in a designated free speech area across the street, urging executives to ramp up efforts to protect children from dangerous content in the company’s App Store.",
+  "input_text": "The products were rolled out at a glossy event where protestors gathered [MASK] street, urging executives to ramp up efforts to protect children from dangerous content in the company’s App Store.",
+  "target_text": "in a designated free speech area across the"
+}
+```
+
+- **评估方法**：使用 [BGE-Reranker-v2-M3](https://www.modelscope.cn/models/BAAI/bge-reranker-v2-m3) 来评估模型补全的文本与目标文本的语义相似度。
+
+**评估结果：**
