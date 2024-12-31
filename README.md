@@ -39,3 +39,15 @@
 | LLM 微调                | 模型能够学习到用户本地知识                   | 微调过程可能需要较多计算资源          |
 | LLM + RAG + Prompt      | 无需微调，直接使用开源模型，成本低，扩展性强 | 需要构建和维护知识库，Prompt 设计复杂 |
 | LLM 微调 + RAG + Prompt | 结合了微调模型的个性化与 RAG 的知识库扩展性  | 需要微调模型，同时维护知识库和 Prompt |
+
+## 实施方案
+
+综合时间限制、现有数据以及模型资源，选择使用 **LLM + RAG + Prompt** 的方案。其中:
+
+- LLM 选用了 GLM 在线模型 [GLM-4-Flash](https://open.bigmodel.cn/dev/activities/free/glm-4-flash)。
+
+- Embedding 模型选用了 [GLM Embedding-3](https://open.bigmodel.cn/dev/api/vector/embedding)。
+
+- 向量检索库选用了 [Milvus Lite](https://milvus.io/docs/zh/quickstart.md)。
+
+- RAG 检索使用了 [pymilvus](https://github.com/milvus-io/pymilvus) 的语义检索能力。
